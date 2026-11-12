@@ -29,6 +29,64 @@ from src.models.viral_model import ViralityPredictor
 from src.utils.config import settings
 from src.utils.logger import logger
 
+
+# ==============================================================================
+# AUTO-SETUP: Generate data & train models on first run (Streamlit Cloud safe)
+# ==============================================================================
+def _auto_setup():
+    """Auto-generate data and train models if not present (cloud deployment)."""
+    raw_path = PROJECT_ROOT / "data" / "raw" / "posts_dataset.csv"
+    train_path = PROJECT_ROOT / "data" / "processed" / "train.csv"
+    viral_model_path = PROJECT_ROOT / "models_saved" / "best_viral_model.joblib"
+    crisis_model_path = PROJECT_ROOT / "models_saved" / "crisis_detector.joblib"
+
+    needs_setup = not raw_path.exists() or not viral_model_path.exists()
+    if not needs_setup:
+        return  # All good, skip
+
+    st.info("⚙️ **First-run setup detected.** Generating data and training models — this takes ~2–3 minutes on first launch. Grab a coffee ☕")
+    progress = st.progress(0, text="Starting setup…")
+
+    try:
+        # Step 1: Generate synthetic dataset
+        if not raw_path.exists():
+            progress.progress(10, text="📊 Generating 20,000 synthetic social media posts…")
+            raw_path.parent.mkdir(parents=True, exist_ok=True)
+            from src.data.synthetic_generator import generate_social_dataset
+            generate_social_dataset()
+
+        # Step 2: Preprocess & split
+        if not train_path.exists():
+            progress.progress(30, text="🔧 Preprocessing data and creating train/val/test splits…")
+            train_path.parent.mkdir(parents=True, exist_ok=True)
+            from src.data.preprocess import run_pipeline
+            run_pipeline()
+
+        # Step 3: Train viral model
+        if not viral_model_path.exists():
+            progress.progress(50, text="🤖 Training viral engagement prediction model (XGBoost + LightGBM)…")
+            viral_model_path.parent.mkdir(parents=True, exist_ok=True)
+            from src.models.train_viral import run_training
+            run_training()
+
+        # Step 4: Train crisis detector
+        if not crisis_model_path.exists():
+            progress.progress(80, text="🚨 Training crisis detection model (Isolation Forest)…")
+            from src.models.train_crisis import run_crisis_training
+            run_crisis_training()
+
+        progress.progress(100, text="✅ Setup complete! Loading dashboard…")
+        import time; time.sleep(1)
+        progress.empty()
+        st.success("✅ Setup complete! Dashboard is ready.")
+        st.rerun()
+
+    except Exception as e:
+        progress.empty()
+        st.error(f"❌ Setup failed: {e}\n\nPlease check the app logs for details.")
+        st.stop()
+
+
 # Page Configuration
 st.set_page_config(
     page_title="SocialPulse AI — Social Intelligence Platform",
@@ -36,6 +94,9 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded",
 )
+
+# Auto-setup on first run (generates data + trains models if missing)
+_auto_setup()
 
 # Custom Styling (Dark/Light friendly, modern cards, badge styling)
 st.markdown("""
