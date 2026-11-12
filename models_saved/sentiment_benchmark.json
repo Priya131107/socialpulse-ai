@@ -1,0 +1,14 @@
+{
+  "VADER": {
+    "accuracy": 0.8,
+    "macro_f1": 0.8089,
+    "latency_ms": 0.11,
+    "throughput_samples_per_sec": 9440.8
+  },
+  "Transformer": {
+    "accuracy": 0.9167,
+    "macro_f1": 0.9243,
+    "latency_ms": 2423.27,
+    "throughput_samples_per_sec": 0.4
+  }
+}

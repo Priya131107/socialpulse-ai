@@ -1,0 +1,70 @@
+# SocialPulse AI Configuration
+
+app:
+  name: "SocialPulse AI"
+  version: "1.0.0"
+  description: "Social Media Intelligence: Virality Prediction, Sentiment Analysis, Crisis Anomaly Detection"
+  environment: "development"
+  debug: true
+
+data:
+  raw_path: "data/raw/posts_dataset.csv"
+  processed_train_path: "data/processed/train.csv"
+  processed_val_path: "data/processed/val.csv"
+  processed_test_path: "data/processed/test.csv"
+  sample_path: "data/sample/sample_posts.csv"
+  synthetic_num_records: 20000
+  random_seed: 42
+  train_ratio: 0.70
+  val_ratio: 0.15
+  test_ratio: 0.15
+
+engagement:
+  # Engagement Score = (likes + 2*shares + 1.5*comments) / (followers + 100) * 1000
+  weight_likes: 1.0
+  weight_shares: 2.0
+  weight_comments: 1.5
+  follower_smoothing: 100
+  score_scale: 1000.0
+  percentile_low_cutoff: 0.50
+  percentile_viral_cutoff: 0.85
+  classes: ["Low", "Moderate", "Viral"]
+
+features:
+  tfidf_max_features: 1000
+  tfidf_ngram_range: [1, 2]
+  tfidf_min_df: 2
+  tfidf_max_df: 0.95
+
+models:
+  saved_dir: "models_saved"
+  viral_model_filename: "best_viral_model.joblib"
+  crisis_model_filename: "crisis_detector.joblib"
+  sentiment_model_name: "cardiffnlp/twitter-roberta-base-sentiment-latest"
+  sentiment_fallback: "vader"
+  use_gpu: false
+
+crisis:
+  rolling_windows_hours: [1, 6, 24]
+  threshold_negative_ratio: 0.40
+  threshold_volume_growth_multiplier: 2.5
+  z_score_threshold: 2.5
+  isolation_forest_contamination: 0.05
+  risk_levels:
+    normal: [0, 39]
+    warning: [40, 69]
+    critical: [70, 100]
+
+alerts:
+  db_path: "alerts.db"
+  cooldown_minutes: 30
+  channels:
+    console: true
+    email: false
+    webhook: false
+
+api:
+  host: "0.0.0.0"
+  port: 8000
+  workers: 1
+

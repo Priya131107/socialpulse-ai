@@ -1,0 +1,4 @@
+Model,Accuracy,Precision (Macro),Recall (Macro),F1 Score (Macro),F1 Score (Weighted),ROC-AUC (OvR)
+XGBoost,0.6159,0.5573,0.5612,0.5591,0.6161,0.7488
+Random Forest,0.5465,0.4831,0.495,0.4853,0.5442,0.6973
+Logistic Regression,0.5137,0.4662,0.4815,0.4565,0.5192,0.7041

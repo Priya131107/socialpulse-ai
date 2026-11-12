@@ -1,0 +1,123 @@
+{
+  "best_model": "XGBoost",
+  "metrics": {
+    "Logistic Regression": {
+      "accuracy": 0.4917,
+      "macro_f1": 0.4474,
+      "macro_precision": 0.4514,
+      "macro_recall": 0.4885,
+      "roc_auc_ovr": 0.6813,
+      "confusion_matrix": [
+        [
+          947,
+          289,
+          264
+        ],
+        [
+          388,
+          267,
+          395
+        ],
+        [
+          79,
+          110,
+          261
+        ]
+      ]
+    },
+    "Random Forest": {
+      "accuracy": 0.4727,
+      "macro_f1": 0.4425,
+      "macro_precision": 0.4438,
+      "macro_recall": 0.4752,
+      "roc_auc_ovr": 0.6684,
+      "confusion_matrix": [
+        [
+          839,
+          401,
+          260
+        ],
+        [
+          351,
+          331,
+          368
+        ],
+        [
+          78,
+          124,
+          248
+        ]
+      ]
+    },
+    "XGBoost": {
+      "accuracy": 0.5097,
+      "macro_f1": 0.4704,
+      "macro_precision": 0.4643,
+      "macro_recall": 0.489,
+      "roc_auc_ovr": 0.677,
+      "confusion_matrix": [
+        [
+          949,
+          372,
+          179
+        ],
+        [
+          427,
+          358,
+          265
+        ],
+        [
+          79,
+          149,
+          222
+        ]
+      ]
+    },
+    "LightGBM": {
+      "accuracy": 0.496,
+      "macro_f1": 0.4584,
+      "macro_precision": 0.4531,
+      "macro_recall": 0.4782,
+      "roc_auc_ovr": 0.67,
+      "confusion_matrix": [
+        [
+          917,
+          396,
+          187
+        ],
+        [
+          408,
+          351,
+          291
+        ],
+        [
+          78,
+          152,
+          220
+        ]
+      ]
+    }
+  },
+  "top_shap_features": {
+    "has_media": 0.2139,
+    "is_evening_peak": 0.11916,
+    "exclamation_count": 0.0944,
+    "has_url": 0.08099,
+    "is_lunch_peak": 0.06531,
+    "log_followers": 0.06087,
+    "hour": 0.04851,
+    "vader_neu": 0.03894,
+    "hour_cos": 0.02153,
+    "day_of_week": 0.01977,
+    "uppercase_ratio": 0.01578,
+    "tfidf_#industrynews": 0.01485,
+    "platform_linkedin": 0.01275,
+    "word_count": 0.01068,
+    "text_length": 0.01007,
+    "tfidf_#analysis": 0.00925,
+    "hour_sin": 0.00919,
+    "emoji_count": 0.00907,
+    "tfidf_#insights": 0.00814,
+    "tfidf_#review": 0.00791
+  }
+}
