@@ -5,6 +5,10 @@
 [![Streamlit](https://img.shields.io/badge/Streamlit-1.30%2B-FF4B4B.svg)](https://streamlit.io/)
 [![XGBoost](https://img.shields.io/badge/XGBoost-Enabled-orange.svg)](https://xgboost.readthedocs.io/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Live Demo](https://img.shields.io/badge/🚀%20Live%20Demo-Streamlit%20Cloud-FF4B4B.svg)](https://socialpulse-ai-xkytwgarbxs7ibccjgjyp7.streamlit.app/)
+
+> 🌐 **[Live Dashboard → socialpulse-ai-xkytwgarbxs7ibccjgjyp7.streamlit.app](https://socialpulse-ai-xkytwgarbxs7ibccjgjyp7.streamlit.app/)**
+> 📦 **[GitHub Repository → github.com/Priya131107/socialpulse-ai](https://github.com/Priya131107/socialpulse-ai)**
 
 **SocialPulse AI** is an end-to-end, production-style machine learning application that analyzes social media conversations to:
 1. **Forecast Post Virality & Engagement Tier** (`Low`, `Moderate`, `Viral`) prior to publishing using strict anti-leakage feature pipelines.
