@@ -1,21 +1,44 @@
-# SocialPulse AI Dependencies
+# SocialPulse AI — Dependencies
+# Note: torch/transformers omitted for Streamlit Cloud (uses VADER sentiment fallback)
+# For local full install with transformer models: pip install torch transformers
+
+# Core data science
 numpy>=1.24.0
 pandas>=2.0.0
 scipy>=1.10.0
+
+# ML models
 scikit-learn>=1.3.0
 xgboost>=2.0.0
 lightgbm>=4.0.0
+joblib>=1.3.0
+
+# Explainability
 shap>=0.44.0
+
+# NLP
 vaderSentiment>=3.3.2
+nltk>=3.8.0
 emoji>=2.8.0
-transformers>=4.36.0
-torch>=2.1.0
+
+# Visualisation
+matplotlib>=3.7.0
+seaborn>=0.13.0
+plotly>=5.18.0
+wordcloud>=1.9.0
+
+# Web / API
 fastapi>=0.109.0
 uvicorn>=0.27.0
 pydantic>=2.5.0
+httpx>=0.26.0
+
+# Dashboard
 streamlit>=1.30.0
-plotly>=5.18.0
+
+# Config & utils
 pyyaml>=6.0
 python-dotenv>=1.0.0
-httpx>=0.26.0
+
+# Testing
 pytest>=8.0.0
