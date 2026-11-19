@@ -4,16 +4,20 @@ Assembles API routes, CORS policies, error handlers, and health monitoring.
 """
 
 from datetime import datetime
+from pathlib import Path
 import os
 import time
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, HTMLResponse
+from fastapi.staticfiles import StaticFiles
 
 from src.api.routes import alerts, crisis, predict, sentiment
 from src.api.schemas import HealthResponse
 from src.utils.config import settings
 from src.utils.logger import logger
+
+STATIC_DIR = Path(__file__).parent / "static"
 
 START_TIME = time.time()
 
@@ -52,23 +56,13 @@ async def startup_event():
     logger.info("SocialPulse AI REST API initialized and ready to accept traffic.")
 
 
-@app.get("/", tags=["General"])
+@app.get("/", response_class=HTMLResponse, tags=["General"])
 def root():
-    return {
-        "app": "SocialPulse AI",
-        "version": "1.0.0",
-        "docs_url": "/docs",
-        "redoc_url": "/redoc",
-        "health_url": "/health",
-        "endpoints": [
-            "POST /predict/engagement",
-            "POST /analyze/sentiment",
-            "GET  /crisis/status?brand={brand}",
-            "GET  /crisis/history?brand={brand}",
-            "POST /alerts/test",
-            "GET  /alerts/recent",
-        ],
-    }
+    """Serve the SocialPulse AI landing page."""
+    html_path = STATIC_DIR / "index.html"
+    if html_path.exists():
+        return HTMLResponse(content=html_path.read_text(encoding="utf-8"))
+    return HTMLResponse(content="<h1>SocialPulse AI API</h1><p><a href='/docs'>API Docs →</a></p>")
 
 
 @app.get("/health", response_model=HealthResponse, tags=["General"])

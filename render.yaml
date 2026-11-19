@@ -1,0 +1,19 @@
+# Render.com deployment configuration
+# Docs: https://render.com/docs/render-yaml
+
+services:
+  - type: web
+    name: socialpulse-ai-api
+    runtime: docker
+    repo: https://github.com/Priya131107/socialpulse-ai
+    branch: main
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: PORT
+        value: 8000
+      - key: PYTHONUNBUFFERED
+        value: "1"
+      - key: ENV
+        value: production
+    healthCheckPath: /health
+    autoDeploy: true

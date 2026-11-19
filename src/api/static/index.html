@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SocialPulse AI — Social Intelligence Platform</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Segoe UI',system-ui,sans-serif;background:#0F172A;color:#F1F5F9;min-height:100vh}
+  .hero{text-align:center;padding:80px 24px 48px}
+  .badge{display:inline-block;background:#7C3AED22;color:#A78BFA;border:1px solid #7C3AED44;border-radius:999px;padding:6px 16px;font-size:.8rem;font-weight:600;letter-spacing:.08em;margin-bottom:24px}
+  h1{font-size:clamp(2rem,5vw,3.5rem);font-weight:800;background:linear-gradient(135deg,#A78BFA,#38BDF8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:16px}
+  .subtitle{color:#94A3B8;font-size:1.1rem;max-width:640px;margin:0 auto 48px;line-height:1.6}
+  .btn-row{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:80px}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;border-radius:10px;font-weight:600;font-size:.95rem;text-decoration:none;transition:all .2s}
+  .btn-primary{background:linear-gradient(135deg,#7C3AED,#2563EB);color:#fff;box-shadow:0 4px 20px #7C3AED44}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 28px #7C3AED66}
+  .btn-secondary{background:#1E293B;color:#CBD5E1;border:1px solid #334155}
+  .btn-secondary:hover{background:#334155;transform:translateY(-2px)}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;max-width:1100px;margin:0 auto;padding:0 24px 80px}
+  .card{background:#1E293B;border:1px solid #334155;border-radius:16px;padding:28px;transition:all .2s}
+  .card:hover{border-color:#7C3AED;transform:translateY(-4px);box-shadow:0 12px 40px #7C3AED22}
+  .card-icon{font-size:2rem;margin-bottom:16px}
+  .card h3{font-size:1.05rem;font-weight:700;margin-bottom:8px;color:#F1F5F9}
+  .card p{font-size:.88rem;color:#94A3B8;line-height:1.6}
+  .api-section{background:#1E293B;border-top:1px solid #334155;padding:60px 24px}
+  .api-inner{max-width:900px;margin:0 auto}
+  .api-inner h2{font-size:1.5rem;font-weight:700;margin-bottom:8px;color:#F1F5F9}
+  .api-inner p{color:#94A3B8;margin-bottom:32px}
+  .endpoints{display:grid;gap:12px}
+  .ep{display:flex;align-items:center;gap:14px;background:#0F172A;border:1px solid #334155;border-radius:10px;padding:14px 18px;font-family:monospace;font-size:.88rem}
+  .method{font-weight:700;padding:3px 10px;border-radius:6px;font-size:.75rem;min-width:52px;text-align:center}
+  .post{background:#7C3AED22;color:#A78BFA}
+  .get{background:#0EA5E922;color:#38BDF8}
+  .ep-path{color:#F1F5F9;flex:1}
+  .ep-desc{color:#64748B;font-family:'Segoe UI',sans-serif;font-size:.82rem}
+  .footer{text-align:center;padding:32px;color:#475569;font-size:.85rem;border-top:1px solid #1E293B}
+  .footer a{color:#7C3AED;text-decoration:none}
+  .stats{display:flex;gap:40px;justify-content:center;flex-wrap:wrap;padding:0 24px 60px}
+  .stat{text-align:center}
+  .stat-val{font-size:2rem;font-weight:800;background:linear-gradient(135deg,#A78BFA,#38BDF8);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .stat-label{font-size:.8rem;color:#64748B;text-transform:uppercase;letter-spacing:.08em;margin-top:4px}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="badge">⚡ Production-Grade ML Platform</div>
+  <h1>SocialPulse AI</h1>
+  <p class="subtitle">
+    Real-time social media intelligence — viral post prediction, dual-engine sentiment analysis,
+    and tri-layer brand crisis detection. Built for scale.
+  </p>
+  <div class="btn-row">
+    <a class="btn btn-primary" href="/docs">📄 API Documentation</a>
+    <a class="btn btn-secondary" href="/redoc">📘 ReDoc Reference</a>
+    <a class="btn btn-secondary" href="/health">💚 Health Status</a>
+    <a class="btn btn-secondary" href="https://github.com/Priya131107/socialpulse-ai" target="_blank">⭐ GitHub Repo</a>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat"><div class="stat-val">20K</div><div class="stat-label">Training Posts</div></div>
+  <div class="stat"><div class="stat-val">91.7%</div><div class="stat-label">Sentiment Accuracy</div></div>
+  <div class="stat"><div class="stat-val">3-Layer</div><div class="stat-label">Crisis Detection</div></div>
+  <div class="stat"><div class="stat-val">31</div><div class="stat-label">Tests Passing</div></div>
+  <div class="stat"><div class="stat-val">6</div><div class="stat-label">REST Endpoints</div></div>
+</div>
+
+<div class="cards">
+  <div class="card">
+    <div class="card-icon">🔮</div>
+    <h3>Viral Engagement Prediction</h3>
+    <p>Classify posts as Low / Moderate / Viral using XGBoost + SHAP feature explanations and posting metadata.</p>
+  </div>
+  <div class="card">
+    <div class="card-icon">💬</div>
+    <h3>Dual-Engine Sentiment</h3>
+    <p>VADER lexicon baseline (0.11ms/post) + RoBERTa transformer (91.7% accuracy) with confidence scores.</p>
+  </div>
+  <div class="card">
+    <div class="card-icon">🚨</div>
+    <h3>Brand Crisis Detection</h3>
+    <p>Rolling-window aggregation across 1h/6h/24h with rule tripwires, Z-score anomalies, and Isolation Forest.</p>
+  </div>
+  <div class="card">
+    <div class="card-icon">🔔</div>
+    <h3>Smart Alert System</h3>
+    <p>Cooldown-throttled multi-channel alerts (console, email, Slack, Telegram) with SQLite audit trail.</p>
+  </div>
+</div>
+
+<div class="api-section">
+  <div class="api-inner">
+    <h2>REST API Endpoints</h2>
+    <p>All endpoints return JSON. Full interactive docs at <a href="/docs">/docs</a>.</p>
+    <div class="endpoints">
+      <div class="ep"><span class="method post">POST</span><span class="ep-path">/predict/engagement</span><span class="ep-desc">Predict post virality + SHAP feature importance</span></div>
+      <div class="ep"><span class="method post">POST</span><span class="ep-path">/analyze/sentiment</span><span class="ep-desc">Sentiment analysis (single or batch)</span></div>
+      <div class="ep"><span class="method get">GET</span><span class="ep-path">/crisis/status?brand=X</span><span class="ep-desc">Current crisis risk score &amp; level</span></div>
+      <div class="ep"><span class="method get">GET</span><span class="ep-path">/crisis/history?brand=X</span><span class="ep-desc">Historical crisis trajectory</span></div>
+      <div class="ep"><span class="method post">POST</span><span class="ep-path">/alerts/test</span><span class="ep-desc">Fire a test alert notification</span></div>
+      <div class="ep"><span class="method get">GET</span><span class="ep-path">/health</span><span class="ep-desc">System health &amp; model readiness</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  Built by <a href="https://github.com/Priya131107" target="_blank">Priya131107</a> ·
+  <a href="https://github.com/Priya131107/socialpulse-ai" target="_blank">GitHub</a> ·
+  SocialPulse AI v1.0.0 · Final Year ML Capstone Project
+</div>
+
+</body>
+</html>
