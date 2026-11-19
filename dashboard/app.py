@@ -108,7 +108,6 @@ page = st.sidebar.radio(
     ["📊 Overview", "🔮 Post Predictor", "💬 Sentiment Analyzer"],
 )
 st.sidebar.divider()
-st.sidebar.info("Built with scikit-learn, VADER, FastAPI, and Streamlit.")
 
 # =============================================================================
 # PAGE 1 — OVERVIEW
