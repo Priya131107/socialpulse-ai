@@ -34,57 +34,106 @@ from src.utils.logger import logger
 # AUTO-SETUP: Generate data & train models on first run (Streamlit Cloud safe)
 # ==============================================================================
 def _auto_setup():
-    """Auto-generate data and train models if not present (cloud deployment)."""
+    """
+    Lightweight first-run check.
+    Models & data are pre-committed to the repo so no training is needed on cloud.
+    Falls back to fast generation only if files are genuinely missing.
+    """
     raw_path = PROJECT_ROOT / "data" / "raw" / "posts_dataset.csv"
     train_path = PROJECT_ROOT / "data" / "processed" / "train.csv"
     viral_model_path = PROJECT_ROOT / "models_saved" / "best_viral_model.joblib"
     crisis_model_path = PROJECT_ROOT / "models_saved" / "crisis_detector.joblib"
 
-    needs_setup = not raw_path.exists() or not viral_model_path.exists()
-    if not needs_setup:
-        return  # All good, skip
+    # Check what's missing
+    missing_data = not raw_path.exists() or not train_path.exists()
+    missing_models = not viral_model_path.exists() or not crisis_model_path.exists()
 
-    st.info("⚙️ **First-run setup detected.** Generating data and training models — this takes ~2–3 minutes on first launch. Grab a coffee ☕")
-    progress = st.progress(0, text="Starting setup…")
+    if not missing_data and not missing_models:
+        return  # Pre-committed assets found — nothing to do
+
+    # Something is missing; run lightweight fast-track setup
+    st.info("⚙️ **One-time setup:** Pre-generating a demo dataset (fast — ~30 seconds)…")
+    progress = st.progress(0, text="Initialising…")
 
     try:
-        # Step 1: Generate synthetic dataset
+        # --- Data ---
         if not raw_path.exists():
-            progress.progress(10, text="📊 Generating 20,000 synthetic social media posts…")
+            progress.progress(15, text="📊 Generating demo dataset (5,000 posts)…")
             raw_path.parent.mkdir(parents=True, exist_ok=True)
             from src.data.synthetic_generator import generate_social_dataset
-            generate_social_dataset()
+            generate_social_dataset(n_posts=5000, output_path=raw_path)
 
-        # Step 2: Preprocess & split
         if not train_path.exists():
-            progress.progress(30, text="🔧 Preprocessing data and creating train/val/test splits…")
+            progress.progress(35, text="🔧 Splitting into train / val / test…")
             train_path.parent.mkdir(parents=True, exist_ok=True)
             from src.data.preprocess import run_pipeline
             run_pipeline()
 
-        # Step 3: Train viral model
+        # --- Models (fast fallback: LogisticRegression only) ---
         if not viral_model_path.exists():
-            progress.progress(50, text="🤖 Training viral engagement prediction model (XGBoost + LightGBM)…")
+            progress.progress(55, text="🤖 Fitting lightweight engagement model…")
             viral_model_path.parent.mkdir(parents=True, exist_ok=True)
-            from src.models.train_viral import run_training
-            run_training()
+            _fit_fast_viral_model(train_path, viral_model_path)
 
-        # Step 4: Train crisis detector
         if not crisis_model_path.exists():
-            progress.progress(80, text="🚨 Training crisis detection model (Isolation Forest)…")
-            from src.models.train_crisis import run_crisis_training
-            run_crisis_training()
+            progress.progress(80, text="🚨 Fitting crisis detector…")
+            _fit_fast_crisis_model(train_path, crisis_model_path)
 
-        progress.progress(100, text="✅ Setup complete! Loading dashboard…")
-        import time; time.sleep(1)
+        progress.progress(100, text="✅ Ready!")
+        import time; time.sleep(0.8)
         progress.empty()
-        st.success("✅ Setup complete! Dashboard is ready.")
         st.rerun()
 
     except Exception as e:
         progress.empty()
-        st.error(f"❌ Setup failed: {e}\n\nPlease check the app logs for details.")
+        st.error(f"❌ Setup failed: {e}\n\nPlease check the app logs.")
         st.stop()
+
+
+def _fit_fast_viral_model(train_path: Path, out_path: Path) -> None:
+    """Train a fast LogisticRegression fallback (seconds, not minutes)."""
+    import joblib
+    import pandas as pd
+    from sklearn.linear_model import LogisticRegression
+    from sklearn.feature_extraction.text import TfidfVectorizer
+    from sklearn.pipeline import Pipeline
+
+    df = pd.read_csv(train_path)
+    if "engagement_label" not in df.columns or "clean_text" not in df.columns:
+        # Create minimal columns from raw data
+        df["clean_text"] = df.get("text", df.get("clean_text", "sample post"))
+        df["engagement_label"] = df.get("engagement_label", "Moderate")
+
+    X = df["clean_text"].fillna("").astype(str)
+    y = df["engagement_label"].fillna("Moderate")
+
+    pipe = Pipeline([
+        ("tfidf", TfidfVectorizer(max_features=2000, ngram_range=(1, 2))),
+        ("clf", LogisticRegression(max_iter=200, class_weight="balanced", random_state=42)),
+    ])
+    pipe.fit(X, y)
+    joblib.dump(pipe, out_path)
+
+
+def _fit_fast_crisis_model(train_path: Path, out_path: Path) -> None:
+    """Train a fast IsolationForest crisis detector (seconds)."""
+    import joblib
+    import numpy as np
+    import pandas as pd
+    from sklearn.ensemble import IsolationForest
+
+    df = pd.read_csv(train_path)
+    # Use simple numeric features that are always present
+    num_cols = [c for c in ["likes", "shares", "comments", "hashtags_count", "mentions_count"]
+                if c in df.columns]
+    if not num_cols:
+        num_cols = [c for c in df.select_dtypes("number").columns][:5]
+
+    X = df[num_cols].fillna(0).values if num_cols else np.zeros((len(df), 1))
+    iso = IsolationForest(n_estimators=50, contamination=0.05, random_state=42)
+    iso.fit(X)
+    # Save with metadata the crisis detector loader expects
+    joblib.dump({"model": iso, "feature_cols": num_cols, "fast_fallback": True}, out_path)
 
 
 # Page Configuration
